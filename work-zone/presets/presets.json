@@ -1,0 +1,14 @@
+{
+    "chill_background": {
+        "volumes": [8, 18, 5, 0],
+        "time": 30
+    },
+    "nature": {
+        "volumes": [0, 40, 10, 0],
+        "time": 40
+    },
+    "third": {
+        "volumes": [50, 50, 50, 50],
+        "time": 60
+    }
+}
