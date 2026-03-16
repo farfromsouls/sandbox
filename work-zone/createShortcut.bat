@@ -8,6 +8,9 @@ set VBS_TEMP=%TEMP%\makelink.vbs
 
 for %%I in ("%PROJECT_PATH%") do set SHORT_PATH=%%~sI
 
+py -3.10 -m venv venv
+venv\Scripts\python -m pip install -r %PROJECT_PATH%/requirements.txt
+
 echo Set WSHShell = WScript.CreateObject("WScript.Shell") > "%VBS_TEMP%"
 echo Set oShellLink = WSHShell.CreateShortcut("%SHORT_PATH%%SHORTCUT_NAME%.lnk") >> "%VBS_TEMP%"
 echo oShellLink.TargetPath = "%SHORT_PATH%venv\Scripts\pythonw.exe" >> "%VBS_TEMP%"

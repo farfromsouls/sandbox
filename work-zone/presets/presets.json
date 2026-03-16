@@ -7,8 +7,12 @@
         "volumes": [0, 40, 10, 0],
         "time": 40
     },
-    "third": {
+    "all_on": {
         "volumes": [50, 50, 50, 50],
+        "time": 60
+    },
+    "muted": {
+        "volumes": [0, 0, 0, 0],
         "time": 60
     }
 }
