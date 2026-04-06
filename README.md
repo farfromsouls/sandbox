@@ -9,3 +9,5 @@ This is a repository of small projects that I have accumulated enough of to brin
  - **typin-game** - made as monkeytype console offline analog 
 
  - **work-zone** - desktop chill/productivity app
+
+ - **tests&practice** - small scripts and notes about languages features
