@@ -10,4 +10,4 @@ This is a repository of small projects that I have accumulated enough of to brin
 
  - **work-zone** - desktop chill/productivity app
 
- - **tests&practice** - small scripts and notes about languages features
+ - **practice** - scripts and notes about languages & features
