@@ -1,4 +1,4 @@
-from mysql.connector import connect, Error
+from mysql.connector import connect
 
 import os
 
@@ -16,14 +16,19 @@ def get_connection():
 def main():
     connection = get_connection()
     cursor = connection.cursor()
-
-    cursor.execute("CREATE TABLE users (id INT, name VARCHAR(100))")
-    cursor.execute("INSERT INTO users VALUES (1, 'Alice')")
-    cursor.execute("INSERT INTO users VALUES (2, 'Bob')")
-    cursor.execute("SELECT * FROM users")
-    users = cursor.fetchall()
-    print(users)
+    exec = cursor.execute
+    fetchall = lambda: print(cursor.fetchall())
     
+    with open("sql_script.txt", "r", encoding="utf-8") as sql_script_file:
+        sql_script_text = sql_script_file.read()
+        sql_commands = sql_script_text.split("\n\n")
+    
+        for command in sql_commands:
+            if command != "":
+                exec(command)
+                if command.startswith("SELECT"):
+                    fetchall()
+
 if __name__ == "__main__":
     main()
     

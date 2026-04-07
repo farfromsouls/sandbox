@@ -10,5 +10,6 @@ RUN pip install mysql-connector-python
 WORKDIR .
 
 COPY main.py .
+COPY sql_script.txt .
 
 CMD ["python", "main.py"]
