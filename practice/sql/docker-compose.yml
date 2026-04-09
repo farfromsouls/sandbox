@@ -5,9 +5,6 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     tmpfs:
@@ -19,6 +16,7 @@ services:
       timeout: 20s
       retries: 30
 
+
   python:
     build: .
     container_name: python_container
@@ -28,14 +26,11 @@ services:
         condition: service_healthy
     volumes:
       - ./app:/app
-    working_dir: /
     networks:
       - app_network
     environment:
-      DB_HOST: ${DB_HOST}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
+      DB_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
 networks:
   app_network:

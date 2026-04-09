@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS fav_food;
+USE fav_food;
+
 CREATE TABLE person (
     person_id SMALLINT UNSIGNED,      
     fname VARCHAR(20),
@@ -39,3 +42,20 @@ INSERT INTO favorite_food (person_id, food)
 VALUES (1, 'nachos');
 
 SELECT food from favorite_food WHERE person_id = 1 ORDER BY food;
+
+INSERT INTO person (person_id, fname, lname, eye_color, birth_date, 
+                    street, city, state, country, postal_code)
+VALUES  (null, 'Susan', 'Smith', 'BL', '1975-11-02', '23 Maple st.', 
+        'Arlington', 'VA', 'USA', '20220');
+
+SELECT person_id, fname, lname, birth_date FROM person;
+
+UPDATE person
+SET street = '1225 Tremont St.',
+    city = 'Boston',
+    state = 'MA',
+    country = 'USA',
+    postal_code = '02138'
+WHERE person_id = 1;
+
+DELETE FROM person WHERE person_id = 2;

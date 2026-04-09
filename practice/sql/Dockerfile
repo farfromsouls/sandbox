@@ -7,9 +7,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install mysql-connector-python
 
-WORKDIR .
+WORKDIR /app
 
-COPY main.py .
-COPY sql_scripts/* .
+COPY . .
 
 CMD ["python", "main.py"]
