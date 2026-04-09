@@ -36,7 +36,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 SET @old_autocommit=@@autocommit;
 
 USE sakila;
-
 --
 -- Dumping data for table actor
 --

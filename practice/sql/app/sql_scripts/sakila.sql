@@ -1,1 +1,2 @@
-SELECT * from category;
+USE sakila;
+SELECT * from language;
