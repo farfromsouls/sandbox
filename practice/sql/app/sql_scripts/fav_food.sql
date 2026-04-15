@@ -15,6 +15,7 @@ CREATE TABLE person (
     CONSTRAINT pk_person PRIMARY KEY (person_id)
 );
 
+-- доп настройка после создания
 ALTER TABLE person MODIFY person_id SMALLINT UNSIGNED AUTO_INCREMENT;
 
 CREATE TABLE favorite_food (
