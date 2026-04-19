@@ -98,6 +98,9 @@ class Database:
 
                 if self.cursor.with_rows:
                     rows = self.cursor.fetchall()
+                    while self.cursor.nextset():
+                        self.cursor.fetchall()
+                    
                     if rows:
                         for row in rows:
                             print(row)
@@ -119,6 +122,8 @@ class Database:
 
 if __name__ == "__main__":
     db = Database()
+    
+    db.run("fav_food")
 
     db.run_cli("sakila-schema")
     db.run_cli("sakila-data", database="sakila")
