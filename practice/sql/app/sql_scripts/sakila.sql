@@ -176,3 +176,55 @@ FROM customer AS c
     ON c.customer_id = r.customer_id
 WHERE date(r.rental_date) = '2005-06-14'
 ORDER BY r.return_date desc;
+
+-- ========================================================================
+-- ФИЛЬТРАЦИЯ
+
+-- неравенство (!=) тут обозначается <>
+
+-- Удаление строк где срок аренды не 2005 и не 2006
+DELETE FROM rental
+WHERE year(rental_date) <> 2005 AND year(rental_date) <> 2006;
+
+-- Оператор between для условий диапозона с 2мя границами:
+SELECT customer_id, rental_date
+FROM rental
+WHERE rental_date BETWEEN '2005-06-14' AND '2005-06-15';
+
+SELECT customer_id, payment_date, amount
+FROM payment
+WHERE amount BETWEEN 10.0 AND 11.99;
+
+-- Есть еще строковые диапозоны
+SELECT last_name, first_name
+FROM customer
+WHERE last_name BETWEEN 'FA' AND 'FR';
+
+-- Вместо того чтобы проверять много OR, можно использовать IN
+SELECT title, rating
+FROM film
+WHERE rating IN ('G', 'PG');
+
+-- ИСПОЛЬЗОВАНИЕ ПОДЗАПРОСОВ
+SELECT title, rating
+FROM film
+WHERE rating IN (
+    SELECT rating
+    FROM film
+    WHERE title LIKE '%PET%'
+);
+
+-- Условия соответствия
+SELECT last_name, first_name
+FROM customer
+WHERE left(last_name, 1) = 'Q';
+
+SELECT last_name, first_name
+FROM customer
+WHERE last_name LIKE '_A_T%S';
+-- _ один символ, % сколько угодно символов
+
+-- Использование регулярных выражений
+SELECT last_name, first_name
+FROM customer
+WHERE last_name REGEXP '^[QY]';
