@@ -228,3 +228,49 @@ WHERE last_name LIKE '_A_T%S';
 SELECT last_name, first_name
 FROM customer
 WHERE last_name REGEXP '^[QY]';
+
+-- ========================================================================
+-- NULL
+
+-- Значение может быть null, Но не может быть = null
+-- Два значения Null никогда не равны друг другу
+
+-- Проверка на null (фильмы взятые в прокат, но которые не были возвращены):
+SELECT rental_id, customer_id
+FROM rental
+WHERE return_date IS null;
+
+-- Та же проверка, но теперь вернет Empty set, т.к. надо проверять через IS а не через =
+SELECT rental_id, customer_id
+FROM rental
+WHERE return_date = null;
+
+-- Проверка призвоенно ли значение столбцу:
+-- SELECT rental_id, customer_id
+-- FROM rental
+-- WHERE return_date IS NOT null;
+-- Закоментил т.к. слишком много строк возвращает
+
+-- Найти все взятые напрокат фильмы, которые не вернулись с мая по август 2005:
+SELECT rental_id, customer_id, return_date
+FROM rental
+WHERE return_date IS NULL
+    OR return_date NOT BETWEEN '2005-05-01' AND '2005-09-01';
+
+--- Упражнения:
+
+-- 1) айди не равен 5 и (кол-во больше 8 или дата оплаты = 23 августа 2005
+
+-- 2) айди = 5 и  НЕ (кол-во больше 6 или дата 19 июня 2005)
+
+-- 3) запрос который извлекает из payments все строки, в оторых сумма равна 1,98 7,98 9,98
+SELECT *
+FROM payment
+WHERE amount in (1.98, 7.98, 9.98);
+
+-- 4) зпрос который находит всех клиентов в фамилиях которых содержатся буква А на второй позиции
+-- и буква W в любом месте после А. 
+SELECT *
+FROM customer
+WHERE last_name LIKE 'A%W%';
+
