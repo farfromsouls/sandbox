@@ -257,7 +257,7 @@ FROM rental
 WHERE return_date IS NULL
     OR return_date NOT BETWEEN '2005-05-01' AND '2005-09-01';
 
---- Упражнения:
+-- Упражнения:
 
 -- 1) айди не равен 5 и (кол-во больше 8 или дата оплаты = 23 августа 2005
 
@@ -273,4 +273,98 @@ WHERE amount in (1.98, 7.98, 9.98);
 SELECT *
 FROM customer
 WHERE last_name LIKE 'A%W%';
+
+-- ========================================================================
+-- JOIN
+
+SELECT c.first_name, c.last_name, a.address
+FROM customer AS c JOIN address AS a
+    ON c.address_id = a.address_id;
+
+-- старый способ JOIN ANSI
+
+SELECT c.first_name, c.last_name, a.address
+FROM customer AS c, address AS a
+WHERE c.address_id = a.address_id;
+
+SELECT c.first_name, c.last_name, a.address
+FROM customer AS c, address AS a
+WHERE c.address_id = a.address_id
+    AND a.postal_code = 52137;
+
+-- Способ SQL92:
+
+SELECT c.first_name, c.last_name, a.address
+FROM customer AS c 
+    INNER JOIN address AS a
+    ON c.address_id = a.address_id
+AND a.postal_code = 52137;
+
+-- JOIN трёх и более таблиц
+
+-- чтобы показать город каждого лиента необходимо перейни
+-- от таблицы customer к таблице adress а затем от таблицы adress
+-- к таблице city 
+SELECT c.first_name, c.last_name, ct.city
+FROM customer AS c
+    INNER JOIN address AS a
+    ON c.address_id = a.address_id
+    INNER JOIN city AS ct
+    ON a.city_id = ct.city_id;
+
+-- ПОРЯДОК В КОТОРОМ СОЕДИНЯЮТСЯ ТАБЛИЦЫ - НЕ ВАЖЕН
+-- максимум это повлияет на то, в каком порядке возвращаются строки
+-- если не установлен ORDER BY
+
+-- Использование подзапросов в качестве INNER JOIN таблиц
+SELECT c.first_name, c.last_name, addr.address, addr.city
+FROM customer AS c
+    INNER JOIN 
+    (
+        SELECT a.address_id, a.address, ct.city
+        FROM address AS a
+            INNER JOIN city AS ct
+            ON a.city_id = ct.city_id
+            WHERE a.district = 'California'
+    ) AS addr
+    ON c.address_id = addr.address_id;
+
+-- Использование одной таблицы дважды
+
+-- Все фильмы в которых фигурируют 2 конкретных актера
+SELECT f.title
+FROM film AS f
+    INNER JOIN film_actor AS fa
+    ON f.film_id = fa.film_id
+    INNER JOIN actor AS a
+    ON fa.actor_id = a.actor_id
+WHERE ((a.first_name = 'CATE' AND a.last_name = 'MCQUEEN')
+    OR (a.first_name = 'CUBA' AND a.last_name = 'BIRCH'));
+
+-- Но предположим, что нам нужны только те фильмы где встречаются оба актера
+-- Для этого нужно найти все строки в таблице films, у которых есть две строки в таблице
+-- film_actor одна из оторых связана с первой актрисой, а вторая со второй. 
+-- Следовательно требуется включить таблицы film_actor и actor дважды, каждый раз
+-- с иным всевдонимом, чтобы сервер знал, на что именно мы ссылаемся в различных 
+-- предложениях
+
+SELECT f.title
+FROM film AS f
+    INNER JOIN film_actor as fa1
+    ON f.film_id = fa1.film_id
+    INNER JOIN actor AS a1
+    ON fa1.actor_id = a1.actor_id
+    INNER JOIN film_actor AS fa2
+    ON f.film_id = fa2.film_id
+    INNER JOIN actor AS a2
+    ON fa2.actor_id = a2.actor_id
+WHERE (a1.first_name = 'CATE' AND a1.last_name = 'MCQUEEN')
+  AND (a2.first_name = 'CUBA' AND a2.last_name = 'BIRCH');
+
+-- Самосоединение
+
+-- Тут запросы писать не буду. Просто вкратце если например foreign key
+-- определенной таблицы ссылается на строки той же таблицы
+-- (например у фильма есть приквел/сиквел - соответственно родительский/дочерний фильм - foreign key)
+-- в таких случаях может встречаться INNER JOIN на ту же функцию, к которой был SELECT
 
