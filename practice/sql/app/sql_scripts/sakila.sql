@@ -368,3 +368,29 @@ WHERE (a1.first_name = 'CATE' AND a1.last_name = 'MCQUEEN')
 -- (например у фильма есть приквел/сиквел - соответственно родительский/дочерний фильм - foreign key)
 -- в таких случаях может встречаться INNER JOIN на ту же функцию, к которой был SELECT
 
+-- Упражнение 5.1
+
+SELECT c.first_name, c.last_name, a.address, ct.city
+FROM customer AS c
+    INNER JOIN address AS a
+    ON c.address_id = a.address_id
+    INNER JOIN city AS ct
+    ON a.city_id = ct.city_id
+WHERE a.district = 'California';
+
+-- Упражнение 5.2
+
+SELECT f.title
+FROM film AS f
+    INNER JOIN film_actor as fa
+    ON f.film_id = fa.film_id
+    INNER JOIN actor AS a
+    ON fa.actor_id = a.actor_id
+WHERE a.first_name = 'JOHN';
+
+-- Упражнение 5.3
+
+SELECT DISTINCT a1.address
+FROM address AS a1
+    INNER JOIN address AS a2
+    ON a1.city_id = a2.city_id;
