@@ -123,12 +123,18 @@ class Database:
 if __name__ == "__main__":
     db = Database()
     
-    db.run("fav_food")
-
+    # основы sql
+    #db.run("fav_food")
+    
+    # подготовка заготовленной sakila db
     db.run_cli("sakila-schema")
     db.run_cli("sakila-data", database="sakila")
-    
     db.use_database("sakila")
-    db.run("sakila")
+    
+    # База sql, sakila сценарий
+    #db.run("sakila-1")
+    
+    # Продолжаем изучать
+    db.run("sakila-2")
 
     db.close()
