@@ -48,3 +48,39 @@ EXCEPT
 SELECT c.first_name, c.last_name
 FROM customer AS c
 WHERE c.first_name LIKE 'J%' AND c.last_name LIKE 'D%';
+
+-- Существуют except all и intersect all, но они реализованны только в 
+-- IBM DB2 Universal Server
+
+-- ========================================================================
+-- Правила применения операторов для работы с множествами
+
+-- Order By для составного запроса:
+SELECT a.first_name AS fname, a.last_name AS lname 
+FROM actor AS a 
+WHERE a.first_name LIKE 'J%' AND a.last_name LIKE 'D%'
+UNION ALL
+SELECT c.first_name, c.last_name  
+FROM customer AS c
+WHERE c.first_name LIKE 'J%' AND c.last_name LIKE 'D%'
+ORDER BY lname, fname;
+-- Пояснение: для orderby нельзя использовать имена столбцов из
+-- второго запроса, если бы order by был по last_name и first_name
+-- мы получили бы ошибку Unknown column
+
+-- Так же надо помнить о приоритете операторов работы над множествами
+
+
+-- ========================================================================
+-- Упражнение 6.2 + 6.3
+SELECT first_name, last_name
+FROM customer
+WHERE customer.last_name LIKE 'L%'
+UNION
+SELECT first_name, last_name
+FROM actor
+WHERE actor.last_name LIKE 'L%'
+ORDER BY last_name;
+
+-- ========================================================================
+-- ГЕНЕРАЦИЯ, ОБРАБОТКА И ПРЕОБРАЗОВАНИЕ ДАННЫХ
