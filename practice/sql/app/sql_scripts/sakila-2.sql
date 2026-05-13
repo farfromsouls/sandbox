@@ -84,3 +84,34 @@ ORDER BY last_name;
 
 -- ========================================================================
 -- ГЕНЕРАЦИЯ, ОБРАБОТКА И ПРЕОБРАЗОВАНИЕ ДАННЫХ
+
+CREATE TABLE string_tbl (
+    char_fld CHAR(30),
+    vchar_fld VARCHAR(30),
+    text_fld TEXT
+);
+
+INSERT INTO string_tbl (char_fld, vchar_fld, text_fld)
+VALUES (
+    'This is char data',
+    'This is varchar data',
+    'This id text data'
+);
+
+-- В старых версиях MySQL поведение было не строгим (ANSI)
+-- Т.Е. при создании слишком длинной строки она усекалась и было предупреждение
+-- а с версии 6.0 мы получаем полноценную ошибку
+-- узнать в каком мы режиме (строгом или нет) можно с помощью:
+SELECT @@session.sql_mode;
+
+-- переключение на ANSI:
+SET sql_mode='ansi';
+SELECT @@session.sql_mode;
+
+UPDATE string_tbl
+SET vchar_fld = 'This id a piece of extremely long data';
+
+SHOW WARNINGS;
+
+SELECT vchar_fld
+FROM string_tbl;
