@@ -115,3 +115,40 @@ SHOW WARNINGS;
 
 SELECT vchar_fld
 FROM string_tbl;
+
+-- Включение одинарных ковычек
+UPDATE string_tbl
+SET text_fld = 'this string '' works';
+-- и SET text_fld = 'this string \' works' для Oracle и MySQL;
+
+SELECT quote(text_fld)
+FROM string_tbl;
+
+-- Включение спец. символов
+SELECT 'abcdefg', char(97, 98, 99, 100, 101, 102, 103);
+-- зависит от набора символов, естественно
+
+-- Способ конкатенации строк зависит от сервера который используем
+SELECT CONCAT('danke sch', CHAR(149), 'n');
+SELECT 'danke sch' + CHAR(149) + 'n';
+
+SELECT ASCII('a');
+
+SELECT LENGTH(char_fld), LENGTH(vchar_fld), LENGTH(text_fld)
+FROM string_tbl;
+
+INSERT INTO string_tbl (char_fld, vchar_fld, text_fld)
+VALUES (
+    'This string is 28 characters',
+    'This string is 28 characters',
+    'This string is 28 characters'
+);
+
+-- Поиск индекса подстроки
+SELECT POSITION('characters' IN vchar_fld)
+FROM string_tbl;
+
+-- Поиск индекса подстроки начиная с определенного индекса
+SELECT LOCATE('is', vchar_fld, 5)
+FROM string_tbl;
+
