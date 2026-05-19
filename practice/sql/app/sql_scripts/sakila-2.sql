@@ -152,3 +152,47 @@ FROM string_tbl;
 SELECT LOCATE('is', vchar_fld, 5)
 FROM string_tbl;
 
+-- strcmp (-1 если первая строка предшествует второй, 0 если идентичны, 1 если первая после второй)
+-- Доступна только в MySQL
+DELETE FROM string_tbl;
+
+INSERT INTO string_tbl (vchar_fld)
+VALUES ('abcd'), ('xyz'), ('QRSTUV'), ('qrstuv'), ('12345');
+
+SELECT vchar_fld 
+FROM string_tbl
+ORDER BY vchar_fld;
+
+SELECT STRCMP('12345', '12345') AS 12345_12345,
+    STRCMP('abcd', 'xyz') AS abcd_xyz,
+    STRCMP('abcd', 'QRSTUV') AS abcd_QRSTUV,
+    STRCMP('qrstuv', 'QRSTUV') AS qrstuv_QRSTUV,
+    STRCMP('12345', 'xyz') AS 12345_xyz,
+    STRCMP('xyz', 'qrstuv') AS xyz_qrstuv;
+
+-- Так же MySQL позволяет использовать в select like и regexp
+SELECT name, name LIKE '%y' AS ends_in_y
+FROM category;
+
+SELECT name, name REGEXP 'y$' AS ends_in_y
+FROM category;
+
+-- Строковые функции возвращающие строки
+
+-- Добавление текста к строкам через CONCAT
+DELETE FROM string_tbl;
+
+INSERT INTO string_tbl (text_fld)
+VALUES ('This string was 29 characters');
+
+UPDATE string_tbl
+SET text_fld = CONCAT(text_fld, ', but now it is longer');
+
+SELECT text_fld
+FROM string_tbl;
+
+-- Таким же образом часто меняют не сами строки в таблице
+-- А вывод запроса
+SELECT CONCAT(first_name, ' ', last_name, ' has been a customer since ', date(create_date)) cust_narrative
+FROM customer;
+
