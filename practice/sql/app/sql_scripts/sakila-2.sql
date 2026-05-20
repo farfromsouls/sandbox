@@ -196,3 +196,23 @@ FROM string_tbl;
 SELECT CONCAT(first_name, ' ', last_name, ' has been a customer since ', date(create_date)) cust_narrative
 FROM customer;
 
+-- Такой метод не работает в Oracle, но есть просто оператор конкатенации
+-- SELECT first_name || ' ' || last_name || ' ' || ' has been a customer since ' || date(create_date) AS cust_narrative
+-- FROM customer;
+
+-- Существует функция insert, она помогает не с добавлением, а с заменой/вставкой
+
+SELECT INSERT('goodbye world', 9, 0, 'cruel ') AS string;
+-- goobye cruel world
+
+SELECT INSERT('goodbye world', 1, 7, 'hello') AS string;
+-- hello world
+
+-- Аналог в Oracle REPLACE:
+SELECT REPLACE('goodbye world', 'goodbye', 'hello');
+
+-- SQL Server stuff такая же как insert в MySQL
+-- SELECT STUFF('hello world', 1, 5, 'goodbye cruel');
+
+SELECT SUBSTRING('goodbye cruel world', 9, 5);
+
