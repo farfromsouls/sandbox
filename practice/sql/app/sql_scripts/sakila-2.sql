@@ -216,3 +216,55 @@ SELECT REPLACE('goodbye world', 'goodbye', 'hello');
 
 SELECT SUBSTRING('goodbye cruel world', 9, 5);
 
+-- ========================================================================
+-- Работа с числовыми данными
+
+SELECT (37 * 59) / (78 - (8 * 6));
+
+-- ДОСТУПНЫЕ ФУНКЦИИ:
+-- acos(x)
+-- asin(x)
+-- atan(x)
+-- cos(x)
+-- cot(x)
+-- exp(x)
+-- ln(x)
+-- sin(x)
+-- sqrt(x)
+-- tan(x)
+
+-- Целочисленное деление mod
+SELECT MOD(10, 4);
+SELECT MOD(22.75, 5);
+
+-- POW
+SELECT POW(2, 8);
+
+SELECT POW(2, 10) AS kilobyte, 
+       POW(2, 20) AS megabyte,
+       POW(2, 30) AS gigabyte, 
+       POW(2, 40) AS terabyte;
+
+-- Управление точностью чисел
+
+-- Округление cell, floor и round 
+SELECT CELL(72.445), FLOOR(72.445);
+SELECT ROUND(72.445), ROUND(72.545);
+
+-- Точность
+SELECT ROUND(72.445, 1), ROUND(72.445, 2), ROUND(72.445, 3);
+
+-- Есть так же функция truncate - она не занимается округдением, она
+-- только отбрасывает знаки после запятой
+SELECT TRUNCATE(72.445, 1), TRUNCATE(72.445, 2), TRUNCATE(72.445, 3);
+
+-- Так же для случаев если например пользователь хочет заказать 17 единиц
+-- продукта, а у нас продается либо только 10 или только 20, то можно
+-- использовать отрицательные значения
+SELECT ROUND(17, -1), TRUNCATE(17, -1);
+
+-- Работа с знаковыми данными
+SELECT SIGN(-10), SIGN(0), SIGN(10);
+--           -1        0         1 
+SELECT ABS(-10);
+
