@@ -247,8 +247,8 @@ SELECT POW(2, 10) AS kilobyte,
 
 -- Управление точностью чисел
 
--- Округление cell, floor и round 
-SELECT CELL(72.445), FLOOR(72.445);
+-- Округление ceil, floor и round 
+SELECT CEIL(72.445), FLOOR(72.445);
 SELECT ROUND(72.445), ROUND(72.545);
 
 -- Точность
@@ -268,3 +268,65 @@ SELECT SIGN(-10), SIGN(0), SIGN(10);
 --           -1        0         1 
 SELECT ABS(-10);
 
+-- ========================================================================
+-- Часовые пояса
+
+-- MySQL хранит в настройках 2 часовых пояса:
+-- часовой пояс непосредственно сервера
+-- часовой пояс сессии с пользователем (с разными пользователями бывают разные)
+SELECT @@global.time_zone, @@session.time_zone;
+
+-- Значение SYSTEM - означает что сервер использует настройку пояса
+-- в котором находится база данных
+
+SET time_zone = 'Europe/Zurich';
+SELECT @@global.time_zone, @@session.time_zone;
+
+-- В Oracle можно поменять session timezone с помощью ALTER
+
+-- ГЕНЕРАЦИЯ ВРЕМЕННЫХ ДАННЫХ
+-- Способы:
+
+-- 1) копирование данных существующего столбца 
+-- 2) выполнение встроенной функции вощвращающей время
+-- 3) построение строкового представления временных данных для вычисления сервером
+
+UPDATE rental
+SET return_date = '2019-09-17 15:30:00'
+WHERE rental_id = 9999;
+
+-- Преобразование строки в дату
+SELECT CAST('2019-09-17 15:30:00' AS DATETIME);
+
+SELECT CAST('2019-09-17' AS DATE) AS date_field,
+    CAST('15:30:00' AS TIME) AS time_field;
+
+-- Функции геренации дат
+UPDATE rental
+SET return_date = STR_TO_DATE('September 17, 2019', '%M %d, %Y')
+WHERE rental_id = 99999;
+
+-- Текущие дата и время
+SELECT CURRENT_DATE(), CURRENT_TIME(), CURRENT_TIMESTAMP();
+
+-- Манипуляции временными данными
+SELECT DATE_ADD(CURRENT_DATE(), INTERVAL 5 DAY);
+
+-- Представим что нам надо поправить временные данные
+-- И нам удобнее сделать это относительно, например:
+-- Нам сказали что фильм вернули на 3 часа 27 минут 11 секунд позже
+-- Чем было указано изначально
+-- Тогда:
+UPDATE rental
+SET return_date = DATE_ADD(return_date, INTERVAL '3:27:11' HOUR_SECOND)
+WHERE rental_id = 99999;
+
+-- Или например мы выяснили что сотрудник с идентификатором
+-- 4789 в базе данных старше, чем на самом деле
+-- Добавим к его дате рождения 9 лет 11 месяцев
+UPDATE employee
+SET birth_date = DATE_ADD(birth_date, INTERVAL '9-11' YEAR_MONTH)
+WHERE emp_id = 4789;
+
+-- Удобный способ узнавать последний день месяца:
+SELECT LAST_DAY('2019-09-17');
