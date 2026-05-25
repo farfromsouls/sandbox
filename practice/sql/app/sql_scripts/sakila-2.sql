@@ -324,9 +324,32 @@ WHERE rental_id = 99999;
 -- Или например мы выяснили что сотрудник с идентификатором
 -- 4789 в базе данных старше, чем на самом деле
 -- Добавим к его дате рождения 9 лет 11 месяцев
-UPDATE employee
-SET birth_date = DATE_ADD(birth_date, INTERVAL '9-11' YEAR_MONTH)
-WHERE emp_id = 4789;
+-- UPDATE employee
+-- SET birth_date = DATE_ADD(birth_date, INTERVAL '9-11' YEAR_MONTH)
+-- WHERE emp_id = 4789;
 
 -- Удобный способ узнавать последний день месяца:
 SELECT LAST_DAY('2019-09-17');
+
+-- Функции возвращающие строки
+SELECT DAYNAME('2019-09-18');
+SELECT EXTRACT(YEAR FROM '2019-09-18 22:19:05');
+
+-- Функции возвращающие числовые значения
+SELECT DATEDIFF('2019-09-03', '2019-06-21');
+SELECT DATEDIFF('2019-09-03 23:59:59', '2019-06-21 00:00:01');
+SELECT DATEDIFF('2019-06-21', '2019-09-03');
+
+-- Функции преобразования
+SELECT CAST('1456328' AS SIGNED INTEGER);
+SELECT CAST('123ABC999' AS UNSIGNED INTEGER);
+show warnings;
+
+-- Упражнение 7.1
+SELECT SUBSTRING('Please find the substring in this string', 17, 8);
+
+-- Упражнение 7.2
+SELECT ABS(-25.76823), SIGN(-25.76823);
+
+-- Упражнение 7.3
+SELECT EXTRACT(MONTH FROM CURRENT_DATE()); 
