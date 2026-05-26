@@ -119,7 +119,6 @@ class Database:
         self.cursor.close()
         self.connection.close()
 
-
 if __name__ == "__main__":
     db = Database()
     
@@ -130,11 +129,11 @@ if __name__ == "__main__":
     db.run_cli("sakila-schema")
     db.run_cli("sakila-data", database="sakila")
     db.use_database("sakila")
-    
-    # База sql, sakila сценарий
-    #db.run("sakila-1")
-    
-    # Продолжаем изучать
-    db.run("sakila-2")
+            
+    # Независимые обучающие сценарии:
+
+    # db.run("sakila-1")
+    # db.run("sakila-2")
+    db.run("sakila-3")
 
     db.close()
