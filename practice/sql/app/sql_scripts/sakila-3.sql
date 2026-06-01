@@ -56,3 +56,59 @@ GROUP BY customer_id;
 SELECT COUNT(customer_id) AS num_rows,
     COUNT(DISTINCT customer_id) AS num_customers
 FROM payment;
+
+-- Использование выражений
+SELECT MAX(datediff(return_date, rental_date))
+FROM rental;
+
+-- Обработка значений null
+CREATE TABLE number_tbl
+(val SMALLINT);
+
+INSERT INTO number_tbl
+VALUES (1);
+
+INSERT INTO number_tbl
+VALUES (3);
+
+INSERT INTO number_tbl
+VALUES (5);
+
+SELECT COUNT(*) num_rows,
+    COUNT(val) num_vals,
+    SUM(val) total,
+    MAX(val) max_val,
+    AVG(val) avg_val
+FROM number_tbl;
+
+INSERT INTO number_tbl
+VALUES (NULL);
+
+SELECT COUNT(*) num_rows,
+    COUNT(val) num_vals,
+    SUM(val) total,
+    MAX(val) max_val,
+    AVG(val) avg_val
+FROM number_tbl;
+
+-- Даже при NULL мы получаем те же значения что и изначально
+-- Т.Е. эти функции игнорируют все встречающиеся NULL
+
+-- Группировка по одному столбцу
+SELECT actor_id, count(*)
+FROM film_actor
+GROUP BY actor_id;
+
+-- Многостолбцовая группировка
+SELECT fa.actor_id, f.rating, count(*)
+FROM film_actor fa
+    INNER JOIN film f
+    ON fa.film_id = f.film_id
+GROUP BY fa.actor_id, f.rating
+ORDER BY 1, 2;
+
+-- Группировка с помощью выражений
+SELECT extract(YEAR FROM rental_date) year,
+    COUNT(*) how_many
+FROM rental
+GROUP BY extract(YEAR FROM rental_date);
