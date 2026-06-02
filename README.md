@@ -4,10 +4,14 @@ This is a repository of small projects that I have accumulated enough of to brin
 
  - **book-tracker** - you can conviniently track how many pages you read and monitor some stats
 
+ - **golang** - Golang course + study projects
+
  - **pomo-clicker** - desktop pomodoro timer with clicker rewards (anti adhd) 
+
+ - **python** - deeper Python learning
+
+ - **sql** - learning SQL (+ SQL testing environment Python+Docker)
 
  - **typin-game** - made as monkeytype console offline analog 
 
  - **work-zone** - desktop chill/productivity app
-
- - **practice** - scripts and notes about languages & features

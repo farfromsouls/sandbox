@@ -112,3 +112,37 @@ SELECT extract(YEAR FROM rental_date) year,
     COUNT(*) how_many
 FROM rental
 GROUP BY extract(YEAR FROM rental_date);
+
+-- Генерация итоговых данных
+-- SELECT fa.actor_id, f.rating, count(*)
+-- FROM film_actor fa
+--     INNER JOIN film f
+--     ON fa.film_id = f.film_id
+-- GROUP BY fa.actor_id, f.rating WITH ROLLUP
+-- ORDER BY 1, 2;
+
+-- Условия группового фильтра
+SELECT fa.actor_id, f.rating, count(*) 
+FROM film_actor fa
+    INNER JOIN film f
+    ON fa.film_id = f.film_id
+WHERE f.rating IN ('G', 'PG')
+GROUP BY fa.actor_id, f.rating
+HAVING count(*) > 9;
+-- Тут фильтр where действует на данные ДО группировки
+-- А having на данные после
+
+-- Упражнение 8.1
+SELECT count(*)
+FROM payment;
+
+-- Упражнение 8.2
+SELECT customer_id, count(*)
+FROM payment
+GROUP BY customer_id;
+
+-- Упражнение 8.3
+SELECT customer_id, count(*)
+FROM payment
+GROUP BY customer_id
+HAVING count(*) > 39;
