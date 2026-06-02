@@ -35,6 +35,21 @@ func main() {
 		}
 	}
 
+	var total, nInts int
+
+	invalid := make([]string, 0)
+
+	for _, k := range arguments[1:] {
+		_, err := strconv.ParseFloat(k, 64)
+		if err == nil {
+			total++
+			nInts++
+			continue
+		}
+		invalid = append(invalid, k)
+	}
+
+	fmt.Printf("total: %d, ints: %d, invalid: %d\n", total, nInts, len(invalid))
 	fmt.Println("Min:", min)
 	fmt.Println("Max:", max)
 }
