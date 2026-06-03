@@ -134,6 +134,7 @@ if __name__ == "__main__":
 
     # db.run("sakila-1")
     # db.run("sakila-2")
-    db.run("sakila-3")
+    # db.run("sakila-3")
+    db.run("sakila-4")
 
     db.close()
