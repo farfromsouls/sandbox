@@ -51,6 +51,13 @@ func main() {
 		fmt.Println("Time:", d.Hour(), d.Minute())
 	}
 
+	d, err = time.Parse("15:04", dateString)
+	if err != nil {
+		fmt.Println("Error during parsing (hh:mm)")
+	} else {
+		fmt.Println("Full:", d)
+		fmt.Println("Time:", d.Hour(), d.Minute())
+	}
 	var t time.Time = time.Now()
 
 	fmt.Println("Epoch time:", t)
@@ -59,7 +66,7 @@ func main() {
 
 	fmt.Println("Date:", d.Day(), d.Month(), d.Year())
 	fmt.Printf("Time: %d:%d\n", d.Hour(), d.Minute())
-	
+
 	// часовые пояса:
 	loc, _ := time.LoadLocation("America/New_York")
 	fmt.Printf("New York Time: %s\n", time.Now().In(loc))
