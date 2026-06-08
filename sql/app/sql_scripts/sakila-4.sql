@@ -109,3 +109,32 @@ HAVING sum(amount) > ANY (
 );
 
 -- = ANY - то же самое что и IN
+
+-- Многостолбцовые запросы
+SELECT fa.actor_id, fa.film_id
+FROM film_actor fa
+WHERE fa.actor_id IN 
+    (SELECT actor_id FROM actor WHERE last_name = 'MONROE')
+    AND
+    (SELECT film_id FROM film WHERE rating = 'PG');
+
+-- однако это ^ можно объединить в это:
+SELECT actor_id, film_id
+FROM film_actor
+WHERE (actor_id, film_id) IN (
+    SELECT a.actor_id, f.film_id
+    FROM actor a
+        CROSS JOIN film f
+    WHERE a.last_name = 'MONROE' AND f.rating = 'PG'
+);
+
+-- Коррелированный запрос - зависит от содержащей его инструкции и выполняется по одному
+-- разу для каждой строки-кандидата
+-- Из-за чего могут быть проблемы с производительностью
+-- Особенно при большом количестве строк в содержащем подзапросе
+SELECT c.first_name, c.last_name
+FROM customer c 
+WHERE 20 = (
+    SELECT count(*) FROM rental r 
+    WHERE r.customer_id = c.customer_id
+);
