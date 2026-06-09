@@ -138,3 +138,56 @@ WHERE 20 = (
     SELECT count(*) FROM rental r 
     WHERE r.customer_id = c.customer_id
 );
+
+-- Кроме условий равенства коррелированные подзапросы можно использовать
+-- в условиях других типов:
+SELECT c.first_name, c.last_name
+FROM customer c, 
+WHERE (
+    SELECT sum(p.amount) FROM peyment p
+    WHERE p.customer_id = c.customer_id
+) BETWEEN 180 AND 240;
+
+-- Оператор exists
+-- наиболее распрастранен для создания условий с коррелированными подзапросами
+-- Например нужно определить существование связи безотносительно к количеству.
+
+--  Следующий запрос находит всех клиентов которые взяли напрокат хотя бы 
+-- один фильм до 25мая 2005года без учета того сколько фильмов было взято
+SELECT c.first_name, c.last_name
+FROM customer c
+WHERE EXISTS (
+    SELECT 1 FROM rental r 
+    WHERE r.customer_id = c.customer_id
+    AND date(r.rental_date) < '2005-05-25'
+);
+
+-- по сути мы можем возвращать тут в подзапросе что угодно, т.к. мы всеравно это никак не используем
+-- но всеравно для exists принято select 1 или select *
+
+-- Так же можно использовать not exists
+
+SELECT a.first_name, a.last_name
+FROM actor a
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM film_actor fa 
+        INNER JOIN film f ON f.film_id = fa.film_id
+    WHERE fa.actor_id = a.actor_id
+        AND f.rating = 'R'
+);
+
+-- Изменение с помощью подзапросов
+
+-- (с проверкой на null)
+UPDATE customer c 
+SET c.last_update = (
+    SELECT max(r.rental_date) FROM rental r 
+    WHERE r.customer_id = c.customer_id)
+WHERE EXISTS (
+    SELECT 1 FROM rental r 
+    WHERE r.customer_id = c.customer_id
+);
+
+-- ВАЖНО: псевдонимы таблиц при использовании инструкции DELETE могут быть недоступны
+-- придется использовать полные названия таблиц
