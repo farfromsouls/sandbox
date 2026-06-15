@@ -191,3 +191,36 @@ WHERE EXISTS (
 
 -- ВАЖНО: псевдонимы таблиц при использовании инструкции DELETE могут быть недоступны
 -- придется использовать полные названия таблиц
+
+
+-- =====================================================
+-- Подзапросы как источники данных 
+
+SELECT c.first_name, c.last_name, p.num_rentals, p.tot_payments
+FROM customer c 
+    INNER JOIN (
+        SELECT customer_id, count(*) num_rentals, sum(amount) tot_payments
+        FROM payment
+        GROUP BY customer_id
+    ) AS p 
+    ON c.customer_id = p.customer_id;
+
+-- Создание данных
+
+SELECT pgroups.name, count(*) num_customers
+FROM  (
+    SELECT customer_id, count(*) num_rentals, sum(amount) tot_payments
+    FROM payment
+    GROUP BY customer_id
+) AS p 
+INNER JOIN (
+    SELECT 'Small Fry' name, 0 low_limit, 74.99 high_limit
+    UNION ALL
+    SELECT 'Average Joes' name, 75 low_limit, 149.99 high_limit
+    UNION ALL
+    SELECT 'Heavy Hitters' name, 150 low_limit, 9999999.99 high_limit;
+) AS pgroups
+ON p.tot_payments 
+    BETWEEN pgroups.low_limit AND pgroups.high_limit
+GROUP BY pgroups.name;
+
