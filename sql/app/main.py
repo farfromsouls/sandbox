@@ -132,9 +132,10 @@ if __name__ == "__main__":
             
     # Независимые обучающие сценарии:
 
-    # db.run("sakila-1")
-    # db.run("sakila-2")
-    # db.run("sakila-3")
-    db.run("sakila-4")
+    # db.run("1")
+    # db.run("2")
+    # db.run("3")
+    # db.run("4")
+    db.run("5")
 
     db.close()

@@ -224,3 +224,34 @@ ON p.tot_payments
     BETWEEN pgroups.low_limit AND pgroups.high_limit
 GROUP BY pgroups.name;
 
+-- Подзапросы ориентированные на задачу 
+
+SELECT c.first_name, c.last_name, ct.city, sum(p.amount) tot_payments, count(*) tot_rentals
+FROM payment p 
+    INNER JOIN customer c 
+    ON p.customer_id = c.customer_id
+    INNER JOIN address a 
+    ON c.address_id = a.address_id
+    INNER JOIN city ct 
+    ON a.city_id = ct.city_id
+GROUP BY c.first_name, c.last_name, ct.city;
+
+-- Но если внимательно посмотреть на этот запрос то можно увидеть, что
+-- таблицы customer, city, address - нужны только для отображения и что в 
+-- таблбице payment уже есть все необходимое для группировок (customer_id, amount)
+
+-- Следовательно можно так:
+
+SELECT c.first_name, c.last_name, ct.city, pymnt.tot_payments, pymnt.tot_rentals
+FROM (
+    SELECT c.first_name, c.last_name, ct.city, sum(amount) tot_payments, count(*) tot_rentals
+    FROM payment 
+    GROUP BY customer_id
+) pymnt
+    INNER JOIN customer c 
+    ON pymnt.customer_id = c.customer_id
+    INNER JOIN address a 
+    ON c.address_id = a.address_id
+    INNER JOIN city ct 
+    ON a.city_id = ct.city_id;
+
